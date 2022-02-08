@@ -41,12 +41,12 @@ describe('AuthService', () => {
         expect(hash).toBeDefined();
     });
 
-    it('throws an error if user signs up with an email that is already in use', async () => {
+    it('throws if user signs up with an email that is already in use', async () => {
         fakeUsersService.find = () => Promise.resolve([{id: 1, email: 'asdf@example.com', password: 'qwertyqwerty'} as User]);
         try {
             await service.signup('asdf@example.com', 'qwertyqwerty');
         } catch(err) {
-           console.log(`Email in use: ${err}`);
+        //    console.log(`Email in use: ${err}`);
         }
     });
 
@@ -54,8 +54,28 @@ describe('AuthService', () => {
         try {
             await service.signin('asdf@example.com', 'qwertyqwerty');
         } catch(err) {
-            console.log(`User not found: ${err}`);
+            // console.log(`User not found: ${err}`);
         }
-    })
+    });
+
+    it('throws if invalid password is provided', async () => {
+        fakeUsersService.find =
+        () => Promise.resolve([{email: 'test@test.com', password: 'password'} as User]);
+
+        try {
+            await service.signin('asdf@asdf', 'notPassword')
+        } catch (err) {
+            // console.log('Wrong password: ',err);
+        }
+    });
+
+    it('returns a user if correct password is provided', async () => {
+        fakeUsersService.find =
+        () => Promise.resolve([{email: 'test@test.com', password: 'ddc78a31d96ba3a9.b46e502daba39526c267180d09d58204200974fcc05cb5c9ac2466be5b0808c3'} as User]);
+
+        const user = await service.signin('test@test.com', 'password');
+        expect(user).toBeDefined();
+
+    });
 });
 
