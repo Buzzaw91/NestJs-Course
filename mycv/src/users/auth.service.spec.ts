@@ -46,7 +46,15 @@ describe('AuthService', () => {
         try {
             await service.signup('asdf@example.com', 'qwertyqwerty');
         } catch(err) {
-           console.log(`Test working -------> ${err}`);
+           console.log(`Email in use: ${err}`);
+        }
+    });
+
+    it('throws if signin is called with an unused email', async () => {
+        try {
+            await service.signin('asdf@example.com', 'qwertyqwerty');
+        } catch(err) {
+            console.log(`User not found: ${err}`);
         }
     })
 });
