@@ -5,10 +5,11 @@ import { User } from './user.entity'
 
 describe('AuthService', () => {
     let service: AuthService;
+    let fakeUsersService: Partial<UsersService>;
 
     beforeEach(async () => {
         // Create a fake copy of the users service
-        const fakeUsersService: Partial<UsersService> = {
+         fakeUsersService = {
             find: () => Promise.resolve([]),
             create: (email: string, password: string) => Promise.resolve({id: 1, email, password} as User )
         };
@@ -39,5 +40,14 @@ describe('AuthService', () => {
         expect(salt).toBeDefined();
         expect(hash).toBeDefined();
     });
+
+    it('throws an error if user signs up with an email that is already in use', async () => {
+        fakeUsersService.find = () => Promise.resolve([{id: 1, email: 'asdf@example.com', password: 'qwertyqwerty'} as User]);
+        try {
+            await service.signup('asdf@example.com', 'qwertyqwerty');
+        } catch(err) {
+           console.log(`Test working -------> ${err}`);
+        }
+    })
 });
 
