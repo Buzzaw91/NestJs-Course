@@ -1,17 +1,23 @@
-import { Controller, Post, Body, UseGuards, Param, Patch } from '@nestjs/common';
-import { CreateReportDto } from './dtos/create-report.dto';
+import { Controller, Post, Body, UseGuards, Param, Patch, Get, Query } from '@nestjs/common';
 import { ReportsService } from './reports.service';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { User } from 'src/users/user.entity';
+import { AuthGuard } from '../guards/auth.guard';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import { User } from '../users/user.entity';
 import { ReportDto } from './dtos/report.dto';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
+import { CreateReportDto } from './dtos/create-report.dto';
 import { ApproveReportDto } from './dtos/approve-report.dto';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { GetEstimateDto } from './dtos/get-estimate.dto';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('reports')
 export class ReportsController {
     constructor(private reportsService: ReportsService) {}
+
+    @Get()
+    getEstimate(@Query() query: GetEstimateDto ) {
+        return this.reportsService.createEstimate(query);
+    }
 
     @Post()
     @UseGuards(AuthGuard)

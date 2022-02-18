@@ -5,9 +5,9 @@ export class ReportDto {
     @Expose()
     id: number;
     @Expose()
+    price: number;
     @Expose()
     approved: boolean;
-    price: number;
     @Expose()
     year: number;
     @Expose()

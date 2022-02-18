@@ -5,11 +5,11 @@ content-type: application/json
 {
     "make": "toyota",
     "model": "camry",
-    "year": 1995,
-    "mileage": 100000,
+    "year": 1994,
+    "mileage": 90000,
     "lng": 0,
     "lat": 0,
-    "price": 800
+    "price": 1200
 }
 
 ### Approve existing report
@@ -19,3 +19,6 @@ content-type: application/json
 {
     "approved": true
 }
+
+### Get an estimate an existing vehicle
+GET http://localhost:3000/reports?make=toyota&model=camry&lat=0&lng=0&mileage=10000&year=1995&price=1200
